@@ -1,13 +1,11 @@
-// src/prices/prices.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PricesService } from './price.service';
-import { PricesController } from './price.controller';
 import { PriceHistory } from './entities/price-history.entity';
+import { PricesService } from './price.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PriceHistory])],
-  controllers: [PricesController],
   providers: [PricesService],
+  exports: [PricesService, TypeOrmModule.forFeature([PriceHistory])], // Export repository
 })
 export class PricesModule {}

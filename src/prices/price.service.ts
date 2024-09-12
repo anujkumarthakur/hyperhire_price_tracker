@@ -54,7 +54,7 @@ export class PricesService {
   // Method to save price data to the database
   private async savePrice(chain: string, price: number) {
     const priceHistory = new PriceHistory();
-    priceHistory.chain = chain;
+    priceHistory.tokenSymbol = chain;
     priceHistory.price = price;
     priceHistory.timestamp = new Date();
     await this.priceHistoryRepository.save(priceHistory);

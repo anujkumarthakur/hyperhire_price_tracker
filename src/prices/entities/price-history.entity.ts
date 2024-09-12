@@ -1,16 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('price_history')
 export class PriceHistory {
   @PrimaryGeneratedColumn()
-  id!: number;  
+  id: number =0;
 
   @Column()
-  chain!: string;
+  tokenSymbol: string = ''; 
 
-  @Column('decimal')
-  price!: number;
+  @Column()
+  price: number = 0; 
 
-  @CreateDateColumn()
-  timestamp!: Date;
+  @Column()
+  timestamp: Date = new Date();
 }

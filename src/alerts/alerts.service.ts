@@ -1,24 +1,26 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan } from 'typeorm';
-import { CreateAlertDto } from './dto/create-alert.dto';
+import { Repository } from 'typeorm';
+import { Alert } from './entities/alert.entity'; // Import the Alert entity
 import { PriceHistory } from '../prices/entities/price-history.entity';
 import * as nodemailer from 'nodemailer';
+import { CreateAlertDto } from './dto/create-alert.dto'; // Import CreateAlertDto
 
 @Injectable()
 export class AlertsService {
   private readonly logger = new Logger(AlertsService.name);
 
   constructor(
-    @InjectRepository(CreateAlertDto)
-    private alertRepository: Repository<CreateAlertDto>,
+    @InjectRepository(Alert) // Use the Alert entity here
+    private alertRepository: Repository<Alert>,
     @InjectRepository(PriceHistory)
     private priceHistoryRepository: Repository<PriceHistory>,
   ) {}
 
   // Method to create a new alert
   async createAlert(createAlertDto: CreateAlertDto) {
-    await this.alertRepository.save(createAlertDto);
+    const alert = this.alertRepository.create(createAlertDto); // Create instance from DTO
+    await this.alertRepository.save(alert); // Save alert
     this.logger.debug('Alert created successfully!');
   }
 
@@ -36,7 +38,7 @@ export class AlertsService {
     // Loop through all alerts and check if conditions are met
     for (const alert of alerts) {
       const relevantPrice = currentPrices.find(
-        (price) => price.chain.toLowerCase() === alert.chain.toLowerCase(),
+        (price) => price.tokenSymbol.toLowerCase() === alert.chain.toLowerCase(),
       );
 
       if (relevantPrice && relevantPrice.price >= alert.price) {

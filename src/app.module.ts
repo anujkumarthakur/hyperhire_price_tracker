@@ -1,4 +1,3 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -9,7 +8,11 @@ import { PricesModule } from './prices/prices.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL,
+      host: 'localhost', 
+      port: 5432,       
+      username: 'postgres', 
+      password: 'Trodl@123', // Make sure this is handled as a string
+      database: 'price_tracker', 
       autoLoadEntities: true,
       synchronize: true,
     }),
